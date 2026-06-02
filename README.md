@@ -13,9 +13,14 @@ Purpose of the main files:
 
 Requirements:
 
-*   Python 3.8 or newer.
-    
-*   Install the required libraries:pip install opencv-python mediapipe numpy
+*   Install python 3.12.10
+*   Install git
+*   Install VS code
+
+Set up:
+*    python -m venv .venv
+*    source .venv/bin/activate
+*    pip install -r requirements.txt
     
 
 How to run:
