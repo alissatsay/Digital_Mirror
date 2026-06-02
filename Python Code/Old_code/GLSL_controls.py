@@ -141,6 +141,14 @@ def main():
     maps_dirty          = False   # flag: rebuild maps before next warp
     frame_idx           = 0
 
+    WINDOW_NAME = "Warped Mirror over Captured Background"
+    cv2.namedWindow(WINDOW_NAME, cv2.WINDOW_NORMAL)
+    cv2.moveWindow(WINDOW_NAME, 1920, 0)
+    cv2.imshow(WINDOW_NAME, np.zeros((height, width, 3), dtype=np.uint8))
+    cv2.waitKey(1)
+    cv2.resizeWindow(WINDOW_NAME, 1920, 1080)
+    cv2.setWindowProperty(WINDOW_NAME, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+
     with mp_pose.Pose(
         static_image_mode=False,
         model_complexity=0,
@@ -211,12 +219,15 @@ def main():
 
             # ── HUD overlay ───────────────────────────────────────────────────
             peak_label = f"{last_uPeakY:.2f}" + (" [manual]" if uPeakY_manual is not None else " [pose]")
-            cv2.putText(final_frame, f"uGain: {uGain:.2f}  (+/- or 0-6)",
-                        (10, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
-            cv2.putText(final_frame, f"uPeak: {peak_label}  (u/d)",
-                        (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+            # cv2.putText(final_frame, f"uGain: {uGain:.2f}  (+/- or 0-6)",
+            #             (10, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+            # cv2.putText(final_frame, f"uPeak: {peak_label}  (u/d)",
+            #             (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
 
-            cv2.imshow("Warped Mirror over Captured Background", final_frame)
+            display_frame = cv2.resize(final_frame, (3840, 2160), interpolation=cv2.INTER_LINEAR)
+            cv2.imshow(WINDOW_NAME, display_frame)
+            cv2.moveWindow(WINDOW_NAME, 3840, 0)
+            # cv2.imshow(WINDOW_NAME, final_frame)
             frame_idx += 1
 
             # ── Key handling ──────────────────────────────────────────────────
